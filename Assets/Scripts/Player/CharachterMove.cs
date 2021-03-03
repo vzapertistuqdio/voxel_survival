@@ -39,7 +39,15 @@ public class CharachterMove : MonoBehaviour
         if (deltaY != 0 || deltaX != 0)
             rgb.velocity = transform.forward*deltaY +transform.right*deltaX;
 
+        ChangeAnimation(deltaY,deltaX);
+    }
+
+    private void ChangeAnimation(float deltaY,float deltaX)
+    {
         animController.ChangeMoveZAnimation(deltaY);
-        animController.ChangeMoveXAnimation(deltaX);
+        if (deltaY < 0)
+            animController.ChangeMoveXAnimation(-deltaX);
+        else
+            animController.ChangeMoveXAnimation(deltaX);
     }
 }
