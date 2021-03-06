@@ -8,7 +8,7 @@ public class CharachterMove : MonoBehaviour
     [SerializeField]
     private float speed;
 
-    private float rotateSpeed = 0.05f;
+    private float rotateSpeed = 0.1f;
 
     private Rigidbody rgb;
     private AnimationController animController;
@@ -24,7 +24,7 @@ public class CharachterMove : MonoBehaviour
     }
 
   
-    private void Update()
+    private void FixedUpdate()
     {
         if (!photonView.IsMine) return;
 
@@ -32,28 +32,22 @@ public class CharachterMove : MonoBehaviour
         float deltaY = Input.GetAxis("Vertical")*speed * Time.deltaTime;
 
 
-        moveVector = -(Camera.main.transform.position - transform.position).normalized;
-        moveVector.y = 0;
-        if (deltaX > 0 || deltaY > 0)
+        moveVector = Vector3.zero;
+        moveVector.x = deltaX * speed;
+        moveVector.z = deltaY * speed;
+
+        if (moveVector.z != 0 || moveVector.x != 0)
         {
-            if (Vector3.Angle(transform.forward, moveVector) > 1)
-            {
-                Vector3 moveDirection = Vector3.RotateTowards(transform.forward, moveVector, rotateSpeed, 0.0f);
-                transform.rotation = Quaternion.LookRotation(moveDirection);
-            }
+            animController.SetMoveState(true);
         }
-        if (deltaY != 0 || deltaX != 0)
-            rgb.velocity = transform.forward*deltaY +transform.right*deltaX;
+        else animController.SetMoveState(false);
 
-        ChangeAnimation(deltaY,deltaX);
+        if (Vector3.Angle(transform.forward, moveVector) > 1)
+        {
+            Vector3 moveDirection = Vector3.RotateTowards(transform.forward, moveVector, rotateSpeed, 0.0f);
+            transform.rotation = Quaternion.LookRotation(moveDirection);
+        }
+        rgb.velocity=moveVector * Time.deltaTime;
     }
 
-    private void ChangeAnimation(float deltaY,float deltaX)
-    {
-        animController.ChangeMoveZAnimation(deltaY);
-        if (deltaY < 0)
-            animController.ChangeMoveXAnimation(-deltaX);
-        else
-            animController.ChangeMoveXAnimation(deltaX);
-    }
 }

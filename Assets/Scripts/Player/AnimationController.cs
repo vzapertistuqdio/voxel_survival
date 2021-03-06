@@ -11,13 +11,7 @@ public class AnimationController : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    public void ChangeMoveZAnimation(float deltaY)
-    {
-        anim.SetFloat("RunZ", deltaY,smoothDamp,Time.deltaTime);
-    }
+    public void SetMoveState(bool val)
+        => anim.SetBool("isMove",val);
 
-    public void ChangeMoveXAnimation(float deltaY)
-    {
-        anim.SetFloat("RunX", deltaY, smoothDamp, Time.deltaTime);
-    }
 }

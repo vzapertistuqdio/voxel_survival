@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class NetworkObjectSpawner : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         SpawnPlayer();
     }
