@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CharachterMove : MonoBehaviour
 {
@@ -13,15 +14,20 @@ public class CharachterMove : MonoBehaviour
     private AnimationController animController;
 
     private Vector3 moveVector;
+
+    private PhotonView photonView;
     private void Start()
     {
         rgb = GetComponent<Rigidbody>();
         animController = GetComponent<AnimationController>();
+        photonView = GetComponent<PhotonView>();
     }
 
   
     private void Update()
     {
+        if (!photonView.IsMine) return;
+
         float deltaX = Input.GetAxis("Horizontal")*speed*Time.deltaTime;
         float deltaY = Input.GetAxis("Vertical")*speed * Time.deltaTime;
 
