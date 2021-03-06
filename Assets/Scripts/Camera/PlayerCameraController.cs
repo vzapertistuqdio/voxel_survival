@@ -11,7 +11,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private Vector3 offset;
 
-    public Transform target;
+    private Transform target;
     public Vector3 offset1;
     public float sensitivity = 3; // чувствительность мышки
     public float limit = 80; // ограничение вращения по Y
@@ -24,6 +24,7 @@ public class PlayerCameraController : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        target = player.transform;
         offset = player.transform.position - transform.position;
 
         limit = Mathf.Abs(limit);
